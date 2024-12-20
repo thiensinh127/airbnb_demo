@@ -42,7 +42,8 @@ const button = tv({
     {
       color: "primary",
       variant: "outlined",
-      className: "border-primary-500 bg-bg-secondary text-primary-500",
+      className:
+        "border-gray-700 bg-bg-secondary text-primary-500 hover:border-gray-400",
     },
     {
       color: "primary",

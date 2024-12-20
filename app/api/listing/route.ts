@@ -3,33 +3,15 @@ import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export async function POST(request: Request) {
-  const currentUser = await getCurrentUser();
+  try {
+    const currentUser = await getCurrentUser();
 
-  if (!currentUser) {
-    return NextResponse.error();
-  }
-
-  const body = await request.json();
-  const {
-    title,
-    description,
-    imageSrc,
-    category,
-    roomCount,
-    bathroomCount,
-    guestCount,
-    location,
-    price,
-  } = body;
-
-  Object.keys(body).forEach((value: any) => {
-    if (!body[value]) {
-      NextResponse.error();
+    if (!currentUser) {
+      return NextResponse.json({ error: `Unauthorized` }, { status: 401 });
     }
-  });
 
-  const listing = await prisma.listing.create({
-    data: {
+    const body = await request.json();
+    const {
       title,
       description,
       imageSrc,
@@ -37,11 +19,54 @@ export async function POST(request: Request) {
       roomCount,
       bathroomCount,
       guestCount,
-      locationValue: location.value,
-      price: parseInt(price, 10),
-      userId: currentUser.id,
-    },
-  });
+      location,
+      price,
+    } = body;
 
-  return NextResponse.json(listing);
+    // Validate required fields
+    const requiredFields = {
+      title,
+      description,
+      imageSrc,
+      category,
+      roomCount,
+      bathroomCount,
+      guestCount,
+      location,
+      price,
+    };
+
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        return NextResponse.json(
+          { error: `${key} is required` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Create listing
+    const listing = await prisma.listing.create({
+      data: {
+        title,
+        description,
+        imageSrc,
+        category,
+        roomCount,
+        bathroomCount,
+        guestCount,
+        locationValue: location.value, // Ensure `location.value` exists
+        price: parseInt(price, 10),
+        userId: currentUser.id,
+      },
+    });
+
+    return NextResponse.json(listing, { status: 201 });
+  } catch (error) {
+    console.error("Error creating listing:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
