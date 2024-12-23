@@ -1,17 +1,16 @@
 "use client";
 import useCountries from "@/app/hooks/useCountry";
-import { SafeUser } from "@/app/types";
-import { Listing, Reservation } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { format } from "date-fns";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useCallback, useMemo } from "react";
 import { HearButton } from "../HearButton";
 import { Button } from "../button";
 
 interface ListingCardProps {
-  data: Listing;
-  reservation?: Reservation;
+  data: SafeListing;
+  reservation?: SafeReservation;
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -62,7 +61,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      onClick={() => router.push(`/listings/${data.id}`)}
+      onClick={() => router.push(`/listing/${data.id}`)}
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
@@ -75,11 +74,6 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           />
           <div className="absolute top-3 right-3">
             <HearButton listingId={data.id} currentUser={currentUser} />
-            <div className="flex flex-row items-center gap-1.5">
-              <div className="text-gray-100 text-sm font-semibold">
-                {data.category}
-              </div>
-            </div>
           </div>
         </div>
         <div className="font-semibold text-lg">
@@ -90,14 +84,19 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         </div>
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">${price}</div>
-          {reservation && <div className="font-light">night</div>}
+          {!reservation && <div className="font-light">night</div>}
         </div>
         {onAction && actionLabel && (
           <Button
             disabled={disabled}
             title={actionLabel}
             onClick={handleCancel}
-          />
+            size="sm"
+            fullWidth
+            className="bg-rose-500 rounded-full text-white py-3 font-semibold w-full transition hover:opacity-80"
+          >
+            {actionLabel}
+          </Button>
         )}
       </div>
     </div>
