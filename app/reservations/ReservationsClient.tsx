@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from "next/navigation";
 import { SafeReservation, SafeUser } from "../types";
 import axios from "axios";
