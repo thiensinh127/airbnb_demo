@@ -4,7 +4,6 @@ import { Modal } from ".";
 import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
-import CategoryBox from "../navbar/CategoryBox";
 import CategoryInput from "../input/CategoryInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import CountrySelect from "../input/CountrySelect";

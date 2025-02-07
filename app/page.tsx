@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Container from "./components/Container";
 import { EmptyState } from "./components/EmptyState";
 import getListings from "./actions/getListings";
