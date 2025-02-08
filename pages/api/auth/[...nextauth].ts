@@ -59,6 +59,12 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      console.log("Redirect URL:", url);
+      return url.startsWith(baseUrl) ? url : baseUrl;
+    },
+  },
 };
 
 export default NextAuth(authOptions);
