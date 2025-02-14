@@ -6,7 +6,7 @@ import ListingCategory from "./ListingCategory";
 import dynamic from "next/dynamic";
 import { Avatar } from "../Avatar";
 
-const Map = dynamic(() => import("../navbar/Map"), { ssr: false });
+const Map = dynamic(() => import("../Map"), { ssr: false });
 
 interface ListingInfoProps {
   user: SafeUser;

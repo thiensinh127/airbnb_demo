@@ -3,7 +3,7 @@ import useCountries from "@/app/hooks/useCountry";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Select from "react-select";
-import Map from "../navbar/Map";
+import Map from "../Map";
 
 export type CountrySelectValue = {
   flag: string;
